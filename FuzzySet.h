@@ -4,14 +4,18 @@ class FuzzySet {
 
 	public:
 		FuzzySet();
-		FuzzySet(int a, int b, int c, int d);
+		FuzzySet(float a, float b, float c, float d);
 		void setIndex(int index);
+		float getPointA();
+		float getPointB();
+		float getPointC();
+		float getPointD();
 
 	private:
-		int _a;
-		int _b;
-		int _c;
-		int _d;
+		float _a;
+		float _b;
+		float _c;
+		float _d;
 		int _index; // The variable index that contains this FuzzySet
 };
 
