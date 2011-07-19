@@ -1,6 +1,5 @@
 #include <inttypes.h>
-#include "FuzzySet.h"
-#include "WProgram.h"
+#include "FuzzyRule.h"
 
 #define MAX_NUMBER_OF_INPUTS 2
 #define MAX_NUMBER_OF_FUZZY_SETS 4
