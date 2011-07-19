@@ -10,7 +10,7 @@ class Fuzzy {
 	public:
 		Fuzzy(int number_input_var);
 
-		void setFuzzySetsInput(int index, int indexRule, FuzzySet f);
+		void setFuzzySetsInput(int index, int indexSet, FuzzySet f);
 
 	private:
 		int number_input_var;

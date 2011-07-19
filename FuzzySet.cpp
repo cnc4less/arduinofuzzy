@@ -15,3 +15,7 @@ FuzzySet::FuzzySet(int a, int b, int c, int d){
 	_d = d;
 }
 
+void FuzzySet::setIndex(int index){
+	_index = index;
+}
+

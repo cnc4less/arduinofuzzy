@@ -12,7 +12,8 @@ Fuzzy::Fuzzy(int number){
 }
 /*************************************************************************************************************************************************************************************/
 
-void Fuzzy::setFuzzySetsInput(int index, int indexRule, FuzzySet f){
-	fuzzySetsInput[index][indexRule] = f;
+void Fuzzy::setFuzzySetsInput(int index, int indexSet, FuzzySet f){
+	fuzzySetsInput[index][indexSet] = f;
+	f.setIndex(index);
 }
 
