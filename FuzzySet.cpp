@@ -33,6 +33,6 @@ float FuzzySet::getPointC(){
 }
 
 float FuzzySet::getPointD(){
-	return _c;
+	return _d;
 }
 
