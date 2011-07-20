@@ -57,3 +57,17 @@ float FuzzyRule::getPointT2(){
 	return _pointT2;
 }
 
+float FuzzyRule::getPertinance(){
+	float pertinance = 0.0;
+
+	if (op == 0){
+		if (fuzzySet1.getPertinance() > fuzzySet2.getPertinance()){
+			pertinance = fuzzySet1.getPertinance();
+		}else{
+			pertinance = fuzzySet2.getPertinance();
+		}
+	}
+
+	return pertinance;
+}
+

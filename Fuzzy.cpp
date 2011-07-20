@@ -78,12 +78,14 @@ void Fuzzy::addRule(FuzzyRule rule){
 
 void Fuzzy::truncate(){
 	float a,b,c,d, slope = 0.0;
-	float pertinanceMax = 0.0;
+	float pertinanceMax = 0.0, intersection = 0.0;
+
+	//Previous Fuzzy Rule
+	FuzzyRule* previousFuzzyRule = NULL;
 
 	for (int i=0; i < MAX_NUMBER_OF_RULES; i++){
 		FuzzyRule f = baseRules[i];
 		if (f.getFired() == 1){ //The rule was fired
-
 
 			FuzzySet set1 = f.getFuzzySet1();
 			FuzzySet set2 = f.getFuzzySet2();
@@ -110,6 +112,36 @@ void Fuzzy::truncate(){
 			slope = 1 / (b - a);
 			pointT2 = (pertinanceMax - 1 + slope * c) / slope;
 			f.setPointT2(pointT2);
+
+			if (previousFuzzyRule == NULL){
+				previousFuzzyRule = &f;
+			}else{
+				//Here, we have to compare the current FuzzyRule with the previous one;
+				FuzzySet previousOutput = previousFuzzyRule->getOutput();
+				float previousPertinance = f.getPertinance();
+
+				//float bP = previousOutput.getPointB();
+				//float cP = previousOutput.getPointC();
+
+				float aP = previousOutput.getPointA();
+				float bP = f.getPointT1();
+				float cP = f.getPointT2();
+				float dP = previousOutput.getPointD();
+
+				//Now, we have to discover if there are intersects points
+				if (a >= aP and a < bP){
+
+				}else if (a >=bP and a < cP){
+					if (output.getPertinance() > previousPertinance){
+						//Now, we have to calculate the function of a-b
+
+						slope = 1 / (b - a);
+						intersection = (previousPertinance -1 + slope * b) / slope;
+					}
+				}else{
+
+				}
+			}
 		}
 	}
 }

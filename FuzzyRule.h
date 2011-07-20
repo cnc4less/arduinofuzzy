@@ -13,6 +13,7 @@ class FuzzyRule {
 		void setPointT2(float t2);
 		float getPointT1();
 		float getPointT2();
+		float getPertinance();
 
 	private:
 		void init();
