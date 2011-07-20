@@ -6,6 +6,7 @@ FuzzySet::FuzzySet(){
 	_b = 0.0;
 	_c = 0.0;
 	_d = 0.0;
+	init();
 }
 
 FuzzySet::FuzzySet(float a, float b, float c, float d){
@@ -13,6 +14,11 @@ FuzzySet::FuzzySet(float a, float b, float c, float d){
 	_b = b;
 	_c = c;
 	_d = d;
+	init();
+}
+
+void FuzzySet::init(){
+	_pertinance = 0.0;
 }
 
 void FuzzySet::setIndex(int index){
@@ -34,5 +40,13 @@ float FuzzySet::getPointC(){
 
 float FuzzySet::getPointD(){
 	return _d;
+}
+
+void FuzzySet::setPertinance(float pertinance){
+	_pertinance = pertinance;
+}
+
+float FuzzySet::getPertinance(){
+	return _pertinance;
 }
 

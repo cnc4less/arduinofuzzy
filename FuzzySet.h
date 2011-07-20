@@ -10,6 +10,9 @@ class FuzzySet {
 		float getPointB();
 		float getPointC();
 		float getPointD();
+		void setPertinance(float pertinance);
+		float getPertinance();
+
 
 	private:
 		float _a;
@@ -17,5 +20,7 @@ class FuzzySet {
 		float _c;
 		float _d;
 		int _index; // The variable index that contains this FuzzySet
+		float _pertinance;
+		void init();
 };
 

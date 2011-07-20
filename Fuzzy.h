@@ -1,8 +1,10 @@
 #include <inttypes.h>
 #include "FuzzyRule.h"
+#include <math.h>
 
 #define MAX_NUMBER_OF_INPUTS 2
 #define MAX_NUMBER_OF_FUZZY_SETS 4
+#define MAX_NUMBER_OF_RULES 16
 
 class Fuzzy {
 
@@ -11,9 +13,13 @@ class Fuzzy {
 
 		void setFuzzySetsInput(int index, int indexSet, FuzzySet f);
 		void setInputs(int index, float value);
+		void addRule(FuzzyRule rule);
 		void fuzzify(int indexInput);
 		float getFuzzification(int indexInput, int indexSet);
-		float evaluate();
+		void evaluate();
+		void truncate();
+		float desfuzzify();
+		FuzzyRule getFuzzyRule(int index);
 
 	private:
 		int number_input_var;
@@ -26,6 +32,7 @@ class Fuzzy {
 		//In this array, we must keep the pertinance for each fuzzy set
 		float resultFuzzyfication[MAX_NUMBER_OF_INPUTS+1][MAX_NUMBER_OF_FUZZY_SETS];
 
-
+		FuzzyRule baseRules[MAX_NUMBER_OF_RULES];
+		int indexRule;
 };
 
