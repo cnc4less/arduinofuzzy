@@ -18,9 +18,15 @@ FuzzyRule::FuzzyRule(FuzzySet f1, FuzzySet f2, FuzzySet out){
 	init();
 }
 
+FuzzyRule::FuzzyRule(FuzzySet f1, FuzzySet out){
+	fuzzySet1 = f1;
+	output = out;
+	init();
+}
+
 void FuzzyRule::evaluate(){
 	if (op == 0){ // 'E'
-		if (fuzzySet1.getPertinance()>0 and fuzzySet2.getPertinance()>0){
+		if (fuzzySet1.getPertinance()>0 and (fuzzySet2.getPertinance()>0 or fuzzySet2.isValid() == 0)){
 			fired = 1;
 		}
 	}

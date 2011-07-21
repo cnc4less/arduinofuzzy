@@ -46,6 +46,8 @@ void Fuzzy::fuzzify(int indexInput){
 	float crispInput = inputs[indexInput];
 
 	for (int i = 0; i < MAX_NUMBER_OF_FUZZY_SETS; i++){
+		pertinance = 0.0;
+		slope = 0.0;
 		fuzzySet = fuzzySetsInput[indexInput][i];
 
 		a = fuzzySet.getPointA();
@@ -58,7 +60,7 @@ void Fuzzy::fuzzify(int indexInput){
 			pertinance = slope * (crispInput - b) + 1;
 		}else if (crispInput >= b and crispInput <= c){
 			pertinance = 1;
-		}else{
+		}else if (crispInput >c and crispInput <= d){
 			slope = 1 / (c - d);
 			pertinance = slope * (crispInput - c) + 1;
 		}
@@ -160,5 +162,16 @@ void Fuzzy::truncate(){
 
 FuzzyRule Fuzzy::getFuzzyRule(int index){
 	return baseRules[index];
+}
+
+void Fuzzy::discretize(int quant){
+	float firstPoint = composition.getPoint(0);
+	float lastPoint = composition.getLastPoint();
+
+	float maxPointT1 = 0.0, maxPointT2 = 0.0;
+
+	float razao = (firstPoint - lastPoint) / (quant - 1);
+
+	//float vi =
 }
 

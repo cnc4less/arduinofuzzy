@@ -50,3 +50,13 @@ float FuzzySet::getPertinance(){
 	return _pertinance;
 }
 
+int FuzzySet::isValid(){
+	int retorno = 0;
+
+	if (_a > 0 or _b > 0 or _c > 0 or _d > 0){
+		retorno = 1;
+	}
+
+	return retorno;
+}
+

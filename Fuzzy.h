@@ -19,6 +19,7 @@ class Fuzzy {
 		void evaluate();
 		void truncate();
 		float desfuzzify();
+		void discretize(int quant);
 		FuzzyRule getFuzzyRule(int index);
 
 	private:

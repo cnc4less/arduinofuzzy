@@ -6,8 +6,10 @@ class FuzzyComposition{
 		void addPoint(float point, float pertinance);
 		void addPointByIndex(int i, float point, float pertinance);
 		float getPoint(int index);
+		float getLastPoint();
 		float getPertinance(int index);
 		int getLength();
+		void discretize(int quant);
 
 	private:
 		void init();

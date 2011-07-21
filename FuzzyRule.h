@@ -4,6 +4,7 @@ class FuzzyRule {
 	public:
 		FuzzyRule();
 		FuzzyRule(FuzzySet f1, FuzzySet f2, FuzzySet out);
+		FuzzyRule(FuzzySet f1, FuzzySet out);
 		void evaluate();
 		int getFired();
 		FuzzySet getFuzzySet1();

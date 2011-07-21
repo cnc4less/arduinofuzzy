@@ -28,6 +28,12 @@ float FuzzyComposition::getPoint(int i){
 	return retorno;
 }
 
+float FuzzyComposition::getLastPoint(){
+	float retorno = points[index-1][0];
+
+	return retorno;
+}
+
 float FuzzyComposition::getPertinance(int i){
 	float retorno = 0.0;
 	if (i <= index ){
@@ -39,5 +45,25 @@ float FuzzyComposition::getPertinance(int i){
 
 int FuzzyComposition::getLength(){
 	return index;
+}
+
+void FuzzyComposition::discretize(int quant){
+	float firstPoint = points[0][0];
+	float lastPoint = getLastPoint();
+
+	float maxPointT1 = 0.0, maxPointT2 = 0.0;
+	int maxIndex = 0.0;
+	for (int i = 0; i < index; i++){
+		if (points[i][1] > maxIndex){
+			maxPointT1 = points[i][0];
+			maxPointT2 = points[i+1][0];
+		}
+	}
+
+	float razao = (firstPoint - lastPoint) / (quant - 1);
+
+	float vi = firstPoint + razao * (maxPointT1 - 1);
+	float vf = firstPoint + razao * (maxPointT2 - 1);
+	float result = (quant * (vi + vf)) / 2 * quant;
 }
 

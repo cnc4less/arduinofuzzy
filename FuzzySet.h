@@ -12,6 +12,7 @@ class FuzzySet {
 		float getPointD();
 		void setPertinance(float pertinance);
 		float getPertinance();
+		int isValid();
 
 
 	private:
