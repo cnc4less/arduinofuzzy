@@ -1,6 +1,6 @@
 #include <inttypes.h>
 #include "FuzzyRule.h"
-#include <math.h>
+#include "FuzzyComposition.h"
 
 #define MAX_NUMBER_OF_INPUTS 2
 #define MAX_NUMBER_OF_FUZZY_SETS 4
@@ -34,5 +34,6 @@ class Fuzzy {
 
 		FuzzyRule baseRules[MAX_NUMBER_OF_RULES];
 		int indexRule;
+		FuzzyComposition composition;
 };
 

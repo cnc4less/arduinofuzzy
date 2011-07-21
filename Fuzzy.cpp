@@ -4,7 +4,6 @@
 #include <inttypes.h>
 
 
-
 Fuzzy::Fuzzy(int number){
 	number_input_var = number;
 	indexRule = 0;
@@ -31,10 +30,14 @@ void Fuzzy::setInputs(int index, float value){
 
 void Fuzzy::evaluate(){
 
+	//Evaluate the Rules; Mark the fired rules
 	for (int i=0; i < MAX_NUMBER_OF_RULES; i++){
 		FuzzyRule f = baseRules[i];
 		f.evaluate();
 	}
+
+	//Truncate the outputs of the fired rules
+	truncate();
 }
 
 void Fuzzy::fuzzify(int indexInput){
@@ -81,7 +84,7 @@ void Fuzzy::truncate(){
 	float pertinanceMax = 0.0, intersection = 0.0;
 
 	//Previous Fuzzy Rule
-	FuzzyRule* previousFuzzyRule = NULL;
+	FuzzyComposition previousFuzzyComposition;
 
 	for (int i=0; i < MAX_NUMBER_OF_RULES; i++){
 		FuzzyRule f = baseRules[i];
@@ -113,37 +116,49 @@ void Fuzzy::truncate(){
 			pointT2 = (pertinanceMax - 1 + slope * c) / slope;
 			f.setPointT2(pointT2);
 
-			if (previousFuzzyRule == NULL){
-				previousFuzzyRule = &f;
+			if (previousFuzzyComposition.getLength() == 0){
+				//previousFuzzyComposition = new FuzzyComposition();
+				previousFuzzyComposition.addPoint(a,0);
+				previousFuzzyComposition.addPoint(pointT1,pertinanceMax);
+				previousFuzzyComposition.addPoint(pointT2,pertinanceMax);
+				previousFuzzyComposition.addPoint(d,0);
 			}else{
 				//Here, we have to compare the current FuzzyRule with the previous one;
-				FuzzySet previousOutput = previousFuzzyRule->getOutput();
-				float previousPertinance = f.getPertinance();
+				int quantPontos = previousFuzzyComposition.getLength();
 
-				//float bP = previousOutput.getPointB();
-				//float cP = previousOutput.getPointC();
+				float pontoX = previousFuzzyComposition.getPoint(0);
+				float pontoY = 0.0;
+				for (int k = 1; k < quantPontos; k++){
+					pontoY = previousFuzzyComposition.getPoint(k);
+					if (a >=pontoX and a <= pontoY){
+						float previousPertinance = previousFuzzyComposition.getPertinance(1);
+						if (output.getPertinance() > previousPertinance ){
+							//Now, we have to calculate the function of a-b
 
-				float aP = previousOutput.getPointA();
-				float bP = f.getPointT1();
-				float cP = f.getPointT2();
-				float dP = previousOutput.getPointD();
+							slope = 1 / (b - a);
+							intersection = (previousPertinance -1 + slope * b) / slope;
 
-				//Now, we have to discover if there are intersects points
-				if (a >= aP and a < bP){
 
-				}else if (a >=bP and a < cP){
-					if (output.getPertinance() > previousPertinance){
-						//Now, we have to calculate the function of a-b
+							FuzzyComposition tempComposition;
 
-						slope = 1 / (b - a);
-						intersection = (previousPertinance -1 + slope * b) / slope;
+							for (int z = 0; z <= k -1; z++ ){
+								tempComposition.addPoint(previousFuzzyComposition.getPoint(z),previousFuzzyComposition.getPertinance(z));
+							}
+							tempComposition.addPoint(intersection,previousPertinance);
+							tempComposition.addPoint(b,pertinanceMax);
+							tempComposition.addPoint(c,pertinanceMax);
+							tempComposition.addPoint(d,0);
+
+							previousFuzzyComposition = tempComposition;
+							break;
+						}
+						pontoX = pontoY;
 					}
-				}else{
-
 				}
 			}
 		}
 	}
+	composition = previousFuzzyComposition;
 }
 
 FuzzyRule Fuzzy::getFuzzyRule(int index){
