@@ -99,7 +99,7 @@ void Fuzzy::truncate(){
 			c = output.getPointC();
 			d = output.getPointD();
 
-			if (set1.getPertinance() > set2.getPertinance()){
+			if (set1.getPertinance() < set2.getPertinance()){
 				pertinanceMax = set1.getPertinance();
 			}else{
 				pertinanceMax = set2.getPertinance();
@@ -117,7 +117,6 @@ void Fuzzy::truncate(){
 			f.setPointT2(pointT2);
 
 			if (previousFuzzyComposition.getLength() == 0){
-				//previousFuzzyComposition = new FuzzyComposition();
 				previousFuzzyComposition.addPoint(a,0);
 				previousFuzzyComposition.addPoint(pointT1,pertinanceMax);
 				previousFuzzyComposition.addPoint(pointT2,pertinanceMax);
@@ -132,28 +131,26 @@ void Fuzzy::truncate(){
 					pontoY = previousFuzzyComposition.getPoint(k);
 					if (a >=pontoX and a <= pontoY){
 						float previousPertinance = previousFuzzyComposition.getPertinance(1);
-						if (output.getPertinance() > previousPertinance ){
-							//Now, we have to calculate the function of a-b
+						//Now, we have to calculate the function of a-b
 
-							slope = 1 / (b - a);
-							intersection = (previousPertinance -1 + slope * b) / slope;
+						slope = 1 / (b - a);
+						intersection = (previousPertinance -1 + slope * b) / slope;
 
 
-							FuzzyComposition tempComposition;
+						FuzzyComposition tempComposition;
 
-							for (int z = 0; z <= k -1; z++ ){
-								tempComposition.addPoint(previousFuzzyComposition.getPoint(z),previousFuzzyComposition.getPertinance(z));
-							}
-							tempComposition.addPoint(intersection,previousPertinance);
-							tempComposition.addPoint(b,pertinanceMax);
-							tempComposition.addPoint(c,pertinanceMax);
-							tempComposition.addPoint(d,0);
-
-							previousFuzzyComposition = tempComposition;
-							break;
+						for (int z = 0; z <= k -1; z++ ){
+							tempComposition.addPoint(previousFuzzyComposition.getPoint(z),previousFuzzyComposition.getPertinance(z));
 						}
-						pontoX = pontoY;
+						tempComposition.addPoint(intersection,previousPertinance);
+						tempComposition.addPoint(b,pertinanceMax);
+						tempComposition.addPoint(c,pertinanceMax);
+						tempComposition.addPoint(d,0);
+
+						previousFuzzyComposition = tempComposition;
+						break;
 					}
+					pontoX = pontoY;
 				}
 			}
 		}
