@@ -19,9 +19,9 @@ Fuzzy::Fuzzy(int number){
 }
 /*************************************************************************************************************************************************************************************/
 
-void Fuzzy::setFuzzySetsInput(int index, int indexSet, FuzzySet f){
+void Fuzzy::setFuzzySetsInput(int index, int indexSet, FuzzySet* f){
 	fuzzySetsInput[index][indexSet] = f;
-	f.setIndex(index);
+	f->setIndex(index);
 }
 
 void Fuzzy::setInputs(int index, float value){
@@ -31,9 +31,9 @@ void Fuzzy::setInputs(int index, float value){
 void Fuzzy::evaluate(){
 
 	//Evaluate the Rules; Mark the fired rules
-	for (int i=0; i < MAX_NUMBER_OF_RULES; i++){
-		FuzzyRule f = baseRules[i];
-		f.evaluate();
+	for (int i=0; i < indexRule; i++){
+		FuzzyRule* f = &baseRules[i];
+		f->evaluate();
 	}
 
 	//Truncate the outputs of the fired rules
@@ -41,7 +41,7 @@ void Fuzzy::evaluate(){
 }
 
 void Fuzzy::fuzzify(int indexInput){
-	FuzzySet fuzzySet;
+	FuzzySet* fuzzySet;
 	float a,b,c,d,slope,pertinance;
 	float crispInput = inputs[indexInput];
 
@@ -50,10 +50,10 @@ void Fuzzy::fuzzify(int indexInput){
 		slope = 0.0;
 		fuzzySet = fuzzySetsInput[indexInput][i];
 
-		a = fuzzySet.getPointA();
-		b = fuzzySet.getPointB();
-		c = fuzzySet.getPointC();
-		d = fuzzySet.getPointD();
+		a = fuzzySet->getPointA();
+		b = fuzzySet->getPointB();
+		c = fuzzySet->getPointC();
+		d = fuzzySet->getPointD();
 
 		if (crispInput >= a and crispInput < b){
 			slope = 1 / (b - a);
@@ -66,7 +66,7 @@ void Fuzzy::fuzzify(int indexInput){
 		}
 
 		resultFuzzyfication[indexInput][i] = pertinance;
-		fuzzySet.setPertinance(pertinance);
+		fuzzySet->setPertinance(pertinance);
 	}
 }
 
@@ -88,35 +88,51 @@ void Fuzzy::truncate(){
 	//Previous Fuzzy Rule
 	FuzzyComposition previousFuzzyComposition;
 
-	for (int i=0; i < MAX_NUMBER_OF_RULES; i++){
-		FuzzyRule f = baseRules[i];
-		if (f.getFired() == 1){ //The rule was fired
+	for (int i=0; i < indexRule; i++){
+		FuzzyRule* f = &baseRules[i];
+		if (f->getFired() == 1){ //The rule was fired
 
-			FuzzySet set1 = f.getFuzzySet1();
-			FuzzySet set2 = f.getFuzzySet2();
-			FuzzySet output = f.getOutput();
+			FuzzySet* set1 = f->getFuzzySet1();
+			FuzzySet* set2 = f->getFuzzySet2();
+			FuzzySet* output = f->getOutput();
 
-			a = output.getPointA();
-			b = output.getPointB();
-			c = output.getPointC();
-			d = output.getPointD();
+			a = output->getPointA();
+			b = output->getPointB();
+			c = output->getPointC();
+			d = output->getPointD();
+                        
+                        pertinanceMax = set1->getPertinance();
+                        
+                        if (set2->isValid() == 1){
+                            if (set1->getPertinance() < set2->getPertinance()){
+                        	pertinanceMax = set1->getPertinance();
+                             }else{
+				pertinanceMax = set2->getPertinance();
+                             }
+                        }
+                   
 
-			if (set1.getPertinance() < set2.getPertinance()){
-				pertinanceMax = set1.getPertinance();
-			}else{
-				pertinanceMax = set2.getPertinance();
-			}
 
 			float pointT1 = 0.0, pointT2 = 0.0;
 
-			//Now, we have to discover the points basead on the pertinanceMax
-			slope = 1 / (b - a);
-			pointT1 = (pertinanceMax - 1 + slope * b) / slope;
-			f.setPointT1(pointT1);
+			//Now, we have to discover the points based on the pertinanceMax
+                        if ( b - a == 0){
+                               pointT1 = b;
+                        }else{
+                                slope = 1 / (b - a);
+                                pointT1 = (pertinanceMax + slope * a) / slope;
+                        }
+			f->setPointT1(pointT1);
 
-			slope = 1 / (b - a);
-			pointT2 = (pertinanceMax - 1 + slope * c) / slope;
-			f.setPointT2(pointT2);
+                        if (c -d == 0){
+                            pointT2 = c;
+                        }else{
+                            slope = 1 / (c - d);
+                            pointT2 = (pertinanceMax + slope * d) / slope;
+                        }
+                        
+			
+			f->setPointT2(pointT2);
 
 			if (previousFuzzyComposition.getLength() == 0){
 				previousFuzzyComposition.addPoint(a,0);
@@ -164,14 +180,11 @@ FuzzyRule Fuzzy::getFuzzyRule(int index){
 	return baseRules[index];
 }
 
-void Fuzzy::discretize(int quant){
-	float firstPoint = composition.getPoint(0);
-	float lastPoint = composition.getLastPoint();
+float Fuzzy::discretize(int quant){
+	return composition.discretize(quant);
+}
 
-	float maxPointT1 = 0.0, maxPointT2 = 0.0;
-
-	float razao = (firstPoint - lastPoint) / (quant - 1);
-
-	//float vi =
+float Fuzzy::desfuzzify(){
+	return discretize(10);
 }
 

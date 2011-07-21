@@ -11,22 +11,25 @@ FuzzyRule::FuzzyRule(){
 	init();
 }
 
-FuzzyRule::FuzzyRule(FuzzySet f1, FuzzySet f2, FuzzySet out){
+FuzzyRule::FuzzyRule(FuzzySet* f1, FuzzySet* f2, FuzzySet* out){
 	fuzzySet1 = f1;
 	fuzzySet2 = f2;
 	output = out;
 	init();
 }
 
-FuzzyRule::FuzzyRule(FuzzySet f1, FuzzySet out){
+FuzzyRule::FuzzyRule(FuzzySet* f1, FuzzySet* out){
+	FuzzySet tempSet;
+
 	fuzzySet1 = f1;
+	fuzzySet2 = &tempSet;
 	output = out;
 	init();
 }
 
 void FuzzyRule::evaluate(){
 	if (op == 0){ // 'E'
-		if (fuzzySet1.getPertinance()>0 and (fuzzySet2.getPertinance()>0 or fuzzySet2.isValid() == 0)){
+		if (fuzzySet1->getPertinance()>0 and (fuzzySet2->getPertinance()>0 or fuzzySet2->isValid() == 0)){
 			fired = 1;
 		}
 	}
@@ -36,15 +39,15 @@ int FuzzyRule::getFired(){
 	return fired;
 }
 
-FuzzySet FuzzyRule::getFuzzySet1(){
+FuzzySet* FuzzyRule::getFuzzySet1(){
 	return fuzzySet1;
 }
 
-FuzzySet FuzzyRule::getFuzzySet2(){
+FuzzySet* FuzzyRule::getFuzzySet2(){
 	return fuzzySet2;
 }
 
-FuzzySet FuzzyRule::getOutput(){
+FuzzySet* FuzzyRule::getOutput(){
 	return output;
 }
 
@@ -67,10 +70,10 @@ float FuzzyRule::getPertinance(){
 	float pertinance = 0.0;
 
 	if (op == 0){
-		if (fuzzySet1.getPertinance() > fuzzySet2.getPertinance()){
-			pertinance = fuzzySet1.getPertinance();
+		if (fuzzySet1->getPertinance() > fuzzySet2->getPertinance()){
+			pertinance = fuzzySet1->getPertinance();
 		}else{
-			pertinance = fuzzySet2.getPertinance();
+			pertinance = fuzzySet2->getPertinance();
 		}
 	}
 

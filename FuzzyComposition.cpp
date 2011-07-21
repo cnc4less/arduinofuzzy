@@ -47,14 +47,15 @@ int FuzzyComposition::getLength(){
 	return index;
 }
 
-void FuzzyComposition::discretize(int quant){
+float FuzzyComposition::discretize(int quant){
 	float firstPoint = points[0][0];
 	float lastPoint = getLastPoint();
 
 	float maxPointT1 = 0.0, maxPointT2 = 0.0;
-	int maxIndex = 0.0;
+	float maxIndex = 0.0;
 	for (int i = 0; i < index; i++){
 		if (points[i][1] > maxIndex){
+                        maxIndex = points[i][1];
 			maxPointT1 = points[i][0];
 			maxPointT2 = points[i+1][0];
 		}
@@ -65,5 +66,7 @@ void FuzzyComposition::discretize(int quant){
 	float vi = firstPoint + razao * (maxPointT1 - 1);
 	float vf = firstPoint + razao * (maxPointT2 - 1);
 	float result = (quant * (vi + vf)) / 2 * quant;
+
+	return result;
 }
 

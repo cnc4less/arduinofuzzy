@@ -11,7 +11,7 @@ class Fuzzy {
 	public:
 		Fuzzy(int number_input_var);
 
-		void setFuzzySetsInput(int index, int indexSet, FuzzySet f);
+		void setFuzzySetsInput(int index, int indexSet, FuzzySet* f);
 		void setInputs(int index, float value);
 		void addRule(FuzzyRule rule);
 		void fuzzify(int indexInput);
@@ -19,22 +19,22 @@ class Fuzzy {
 		void evaluate();
 		void truncate();
 		float desfuzzify();
-		void discretize(int quant);
 		FuzzyRule getFuzzyRule(int index);
 
 	private:
 		int number_input_var;
 
-		FuzzySet fuzzySetsInput[MAX_NUMBER_OF_INPUTS+1][MAX_NUMBER_OF_FUZZY_SETS];
+		FuzzySet* fuzzySetsInput[MAX_NUMBER_OF_INPUTS+1][MAX_NUMBER_OF_FUZZY_SETS];
 
 		//Crisp Inputs
 		float inputs[MAX_NUMBER_OF_INPUTS];
 
-		//In this array, we must keep the pertinance for each fuzzy set
+		//In this array, we must keep the pertinence for each fuzzy set
 		float resultFuzzyfication[MAX_NUMBER_OF_INPUTS+1][MAX_NUMBER_OF_FUZZY_SETS];
 
 		FuzzyRule baseRules[MAX_NUMBER_OF_RULES];
 		int indexRule;
 		FuzzyComposition composition;
+		float discretize(int quant);
 };
 

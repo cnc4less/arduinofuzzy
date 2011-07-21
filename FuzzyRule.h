@@ -3,13 +3,13 @@
 class FuzzyRule {
 	public:
 		FuzzyRule();
-		FuzzyRule(FuzzySet f1, FuzzySet f2, FuzzySet out);
-		FuzzyRule(FuzzySet f1, FuzzySet out);
+		FuzzyRule(FuzzySet* f1, FuzzySet* f2, FuzzySet* out);
+		FuzzyRule(FuzzySet* f1, FuzzySet* out);
 		void evaluate();
 		int getFired();
-		FuzzySet getFuzzySet1();
-		FuzzySet getFuzzySet2();
-		FuzzySet getOutput();
+		FuzzySet* getFuzzySet1();
+		FuzzySet* getFuzzySet2();
+		FuzzySet* getOutput();
 		void setPointT1(float t1);
 		void setPointT2(float t2);
 		float getPointT1();
@@ -18,9 +18,9 @@ class FuzzyRule {
 
 	private:
 		void init();
-		FuzzySet fuzzySet1;
-		FuzzySet fuzzySet2;
-		FuzzySet output;
+		FuzzySet* fuzzySet1;
+		FuzzySet* fuzzySet2;
+		FuzzySet* output;
 
 		int op; // Operator;
 		int fired; //Was the rule fired???

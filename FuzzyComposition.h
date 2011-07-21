@@ -9,7 +9,7 @@ class FuzzyComposition{
 		float getLastPoint();
 		float getPertinance(int index);
 		int getLength();
-		void discretize(int quant);
+		float discretize(int quant);
 
 	private:
 		void init();
