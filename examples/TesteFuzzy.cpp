@@ -37,40 +37,38 @@ int main(){
  	fuzzy.addRule(rule2);
   	fuzzy.addRule(rule3);
 
+        //Definindo o valor crisp da Velocidade
+        fuzzy.setInputs(0, 40);
 
-  	//Definindo o valor crisp da Velocidade
-  	fuzzy.setInputs(0,40);
+        //Fuzzificando
+        fuzzy.fuzzify(0);
 
-	//Fuzzificando
-	fuzzy.fuzzify(0);
+        fuzzy.evaluate();
 
-	float pertinenciaVelocidadeBaixa = fuzzy.getFuzzification(0,0);
-	float pertinenciaVelocidadeMedia = fuzzy.getFuzzification(0,1);
-	float pertinenciaVelocidadeAlta = fuzzy.getFuzzification(0,2);
+        float pertinenciaVelocidadeBaixa = fuzzy.getFuzzification(0, 0);
+        float pertinenciaVelocidadeMedia = fuzzy.getFuzzification(0, 1);
+        float pertinenciaVelocidadeAlta = fuzzy.getFuzzification(0, 2);
 
-	cout << "Pertinências...: \n\n";
-	cout << "Velocidade Baixa: ";
-	cout << pertinenciaVelocidadeBaixa;
-	cout << "\n";
+        cout << "Pertinências...: \n\n";
+        cout << "Velocidade Baixa: ";
+        cout << pertinenciaVelocidadeBaixa;
+        cout << "\n";
 
-	cout << "Velocidade Media: ";
-	cout << pertinenciaVelocidadeMedia;
-	cout << "\n";
+        cout << "Velocidade Media: ";
+        cout << pertinenciaVelocidadeMedia;
+        cout << "\n";
 
-	cout << "Velocidade Alta: ";
-	cout << pertinenciaVelocidadeAlta;
-	cout << "\n";
+        cout << "Velocidade Alta: ";
+        cout << pertinenciaVelocidadeAlta;
+        cout << "\n";
 
-	//Avaliar as regras;
-	fuzzy.evaluate();
+        //Avaliar as regras;
+        fuzzy.evaluate();
 
-	float resultado = fuzzy.desfuzzify();
-	cout << "\nResultado: ";
-	cout << resultado;
-	cout << "\n";
-
-
-
+        float resultado = fuzzy.desfuzzify();
+        cout << "\nResultado: ";
+        cout << resultado;
+        cout << "\n";
 	return 0;
 }
 

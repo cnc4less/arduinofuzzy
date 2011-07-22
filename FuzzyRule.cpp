@@ -19,19 +19,23 @@ FuzzyRule::FuzzyRule(FuzzySet* f1, FuzzySet* f2, FuzzySet* out){
 }
 
 FuzzyRule::FuzzyRule(FuzzySet* f1, FuzzySet* out){
-	FuzzySet tempSet;
-
 	fuzzySet1 = f1;
-	fuzzySet2 = &tempSet;
+	fuzzySet2 = 0;
 	output = out;
 	init();
 }
 
 void FuzzyRule::evaluate(){
 	if (op == 0){ // 'E'
-		if (fuzzySet1->getPertinance()>0 and (fuzzySet2->getPertinance()>0 or fuzzySet2->isValid() == 0)){
+            if (fuzzySet2 == 0){
+                if (fuzzySet1->getPertinance()>0){
+                    fired = 1;
+                }
+            }else{
+		if (fuzzySet1->getPertinance()>0 && fuzzySet2->getPertinance()>0){
 			fired = 1;
 		}
+            }
 	}
 }
 

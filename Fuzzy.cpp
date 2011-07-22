@@ -55,12 +55,12 @@ void Fuzzy::fuzzify(int indexInput){
 		c = fuzzySet->getPointC();
 		d = fuzzySet->getPointD();
 
-		if (crispInput >= a and crispInput < b){
+		if (crispInput >= a && crispInput < b){
 			slope = 1 / (b - a);
 			pertinance = slope * (crispInput - b) + 1;
-		}else if (crispInput >= b and crispInput <= c){
+		}else if (crispInput >= b && crispInput <= c){
 			pertinance = 1;
-		}else if (crispInput >c and crispInput <= d){
+		}else if (crispInput >c && crispInput <= d){
 			slope = 1 / (c - d);
 			pertinance = slope * (crispInput - c) + 1;
 		}
@@ -89,10 +89,10 @@ void Fuzzy::truncate(){
 	FuzzyComposition previousFuzzyComposition;
 
 	for (int i=0; i < indexRule; i++){
-		FuzzyRule* f = &baseRules[i];
+                FuzzyRule* f = &baseRules[i];
 		if (f->getFired() == 1){ //The rule was fired
 
-			FuzzySet* set1 = f->getFuzzySet1();
+                        FuzzySet* set1 = f->getFuzzySet1();
 			FuzzySet* set2 = f->getFuzzySet2();
 			FuzzySet* output = f->getOutput();
 
@@ -100,80 +100,77 @@ void Fuzzy::truncate(){
 			b = output->getPointB();
 			c = output->getPointC();
 			d = output->getPointD();
-                        
-                        pertinanceMax = set1->getPertinance();
-                        
-                        if (set2->isValid() == 1){
-                            if (set1->getPertinance() < set2->getPertinance()){
-                        	pertinanceMax = set1->getPertinance();
-                             }else{
-				pertinanceMax = set2->getPertinance();
-                             }
+
+                        pertinanceMax = set1->getPertinance(); //ok
+
+                        if (set2 != 0){
+                                if (set1->getPertinance() < set2->getPertinance()){
+                                        pertinanceMax = set1->getPertinance();
+                                }else{
+                                        pertinanceMax = set2->getPertinance();
+                                }
                         }
-                   
+                        float pointT1 = 0.0, pointT2 = 0.0;
 
-
-			float pointT1 = 0.0, pointT2 = 0.0;
-
-			//Now, we have to discover the points based on the pertinanceMax
+                        //Now, we have to discover the points based on the pertinanceMax
                         if ( b - a == 0){
-                               pointT1 = b;
+                                pointT1 = b;
                         }else{
                                 slope = 1 / (b - a);
                                 pointT1 = (pertinanceMax + slope * a) / slope;
                         }
-			f->setPointT1(pointT1);
+                        f->setPointT1(pointT1);
 
-                        if (c -d == 0){
-                            pointT2 = c;
+                        if (c - d == 0){
+                                pointT2 = c;
                         }else{
-                            slope = 1 / (c - d);
-                            pointT2 = (pertinanceMax + slope * d) / slope;
+                                slope = 1 / (c - d);
+                                pointT2 = (pertinanceMax + slope * d) / slope;
                         }
                         
-			
-			f->setPointT2(pointT2);
+                        
+            f->setPointT2(pointT2);
 
-			if (previousFuzzyComposition.getLength() == 0){
-				previousFuzzyComposition.addPoint(a,0);
-				previousFuzzyComposition.addPoint(pointT1,pertinanceMax);
-				previousFuzzyComposition.addPoint(pointT2,pertinanceMax);
-				previousFuzzyComposition.addPoint(d,0);
-			}else{
-				//Here, we have to compare the current FuzzyRule with the previous one;
-				int quantPontos = previousFuzzyComposition.getLength();
+            if (previousFuzzyComposition.getLength() == 0) {
+                previousFuzzyComposition.addPoint(a, 0);
+                previousFuzzyComposition.addPoint(pointT1, pertinanceMax);
+                previousFuzzyComposition.addPoint(pointT2, pertinanceMax);
+                previousFuzzyComposition.addPoint(d, 0);
+            } else {
+                //Here, we have to compare the current FuzzyRule with the previous one;
+                int quantPontos = previousFuzzyComposition.getLength();
 
-				float pontoX = previousFuzzyComposition.getPoint(0);
-				float pontoY = 0.0;
-				for (int k = 1; k < quantPontos; k++){
-					pontoY = previousFuzzyComposition.getPoint(k);
-					if (a >=pontoX and a <= pontoY){
-						float previousPertinance = previousFuzzyComposition.getPertinance(1);
-						//Now, we have to calculate the function of a-b
+                float pontoX = previousFuzzyComposition.getPoint(0);
+                float pontoY = 0.0;
+                for (int k = 1; k < quantPontos; k++) {
+                        pontoY = previousFuzzyComposition.getPoint(k);
+                        if (a >= pontoX and a <= pontoY) {
+                                float previousPertinance = previousFuzzyComposition.getPertinance(1);
+                                //Now, we have to calculate the function of a-b
 
-						slope = 1 / (b - a);
-						intersection = (previousPertinance -1 + slope * b) / slope;
+                                slope = 1 / (b - a);
+                                intersection = (previousPertinance - 1 + slope * b) / slope;
 
 
-						FuzzyComposition tempComposition;
+                                FuzzyComposition tempComposition;
 
-						for (int z = 0; z <= k -1; z++ ){
-							tempComposition.addPoint(previousFuzzyComposition.getPoint(z),previousFuzzyComposition.getPertinance(z));
-						}
-						tempComposition.addPoint(intersection,previousPertinance);
-						tempComposition.addPoint(b,pertinanceMax);
-						tempComposition.addPoint(c,pertinanceMax);
-						tempComposition.addPoint(d,0);
+                                for (int z = 0; z <= k - 1; z++) {
+                                        tempComposition.addPoint(previousFuzzyComposition.getPoint(z), previousFuzzyComposition.getPertinance(z));
+                                }
+                                tempComposition.addPoint(intersection, previousPertinance);
+                                tempComposition.addPoint(b, pertinanceMax);
+                                tempComposition.addPoint(c, pertinanceMax);
+                                tempComposition.addPoint(d, 0);
 
-						previousFuzzyComposition = tempComposition;
-						break;
-					}
-					pontoX = pontoY;
-				}
-			}
-		}
-	}
-	composition = previousFuzzyComposition;
+                                previousFuzzyComposition = tempComposition;
+                                break;
+                        }
+                    pontoX = pontoY;
+                }
+            }
+        }
+     }
+     composition = previousFuzzyComposition;       
 }
 
 FuzzyRule Fuzzy::getFuzzyRule(int index){
