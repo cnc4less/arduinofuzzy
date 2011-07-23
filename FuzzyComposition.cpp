@@ -1,4 +1,5 @@
 #include "FuzzyComposition.h"
+#include <math.h>
 
 void FuzzyComposition::init(){
 	index = 0;
@@ -63,16 +64,14 @@ float FuzzyComposition::discretize(int quant){
 
 	float razao = (lastPoint - firstPoint) / (quant - 1);
         float pos_ini = ((maxPointT1 - firstPoint) / razao) + 1;
+        pos_ini = ceil(pos_ini);
         float vi = firstPoint + razao * (pos_ini - 1);
         
-        float pos_fim = ((lastPoint - maxPointT2) / razao) + 1;
+        float pos_fim = ((maxPointT2 - firstPoint) / razao) + 1;
+        pos_fim=ceil(pos_fim);
         float vf = firstPoint + razao * (pos_fim - 1);
 
-	//float vi = firstPoint + razao * (maxPointT1 - 1);
-	//float vf = firstPoint + razao * (maxPointT2 - 1);
-	//float result = (quant(vf + vi)) / 2 * quant ;
-        //float result = (vf + vi) / 2;
-        float result = (maxPointT1 + maxPointT2) / 2;
+        float result = (vf + vi)/ 2;
 
 	return result;
 }
