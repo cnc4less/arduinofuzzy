@@ -33,6 +33,7 @@ class Fuzzy {
 		float resultFuzzyfication[MAX_NUMBER_OF_INPUTS+1][MAX_NUMBER_OF_FUZZY_SETS];
 
 		FuzzyRule baseRules[MAX_NUMBER_OF_RULES];
+                void reOrderBaseRules();
 		int indexRule;
 		FuzzyComposition composition;
 		float discretize(int quant);

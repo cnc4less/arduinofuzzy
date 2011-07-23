@@ -1,5 +1,5 @@
 #include <iostream>
-#include "Fuzzy.h"
+#include "../Fuzzy.h"
 
 using namespace std;
 
@@ -58,15 +58,12 @@ int main(){
         cout << pertinenciaVelocidadeMedia;
         cout << "\n";
 
-        cout << "Velocidade Alta: ";
+        cout << "Velocidade Alta.........: ";
         cout << pertinenciaVelocidadeAlta;
         cout << "\n";
 
-        //Avaliar as regras;
-        fuzzy.evaluate();
-
         float resultado = fuzzy.desfuzzify();
-        cout << "\nResultado: ";
+        cout << "\nResultado..........: ";
         cout << resultado;
         cout << "\n";
 	return 0;

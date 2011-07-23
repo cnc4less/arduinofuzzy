@@ -3,7 +3,6 @@
 #include <string.h>
 #include <inttypes.h>
 
-
 Fuzzy::Fuzzy(int number){
 	number_input_var = number;
 	indexRule = 0;
@@ -28,6 +27,26 @@ void Fuzzy::setInputs(int index, float value){
 	inputs[index] = value;
 }
 
+void Fuzzy::reOrderBaseRules(){
+    int temp = indexRule - 1;
+    for (int k=temp; k>=1; k--){
+        for (int i=0; i < k; i++){
+                FuzzyRule fAtual = baseRules[i];
+                FuzzyRule fPosterior = baseRules[i+1];
+        
+                float aAtual = fAtual.getOutput()->getPointA();
+                float aPosterior = fPosterior.getOutput()->getPointA();
+        
+                if (aAtual > aPosterior){
+                    baseRules[i] = fPosterior;
+                    baseRules[i+1] = fAtual;
+                }
+        }
+        
+    }
+    
+}
+
 void Fuzzy::evaluate(){
 
 	//Evaluate the Rules; Mark the fired rules
@@ -36,6 +55,8 @@ void Fuzzy::evaluate(){
 		f->evaluate();
 	}
 
+        //Re-order the rules, based on the outputs;
+        reOrderBaseRules();
 	//Truncate the outputs of the fired rules
 	truncate();
 }
@@ -127,8 +148,8 @@ void Fuzzy::truncate(){
                                 slope = 1 / (c - d);
                                 pointT2 = (pertinanceMax + slope * d) / slope;
                         }
-                        
-                        
+
+
             f->setPointT2(pointT2);
 
             if (previousFuzzyComposition.getLength() == 0) {
@@ -170,7 +191,7 @@ void Fuzzy::truncate(){
             }
         }
      }
-     composition = previousFuzzyComposition;       
+     composition = previousFuzzyComposition;
 }
 
 FuzzyRule Fuzzy::getFuzzyRule(int index){
