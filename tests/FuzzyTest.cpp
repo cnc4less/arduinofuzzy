@@ -1,7 +1,22 @@
 #include "../Fuzzy.h"
 #include "gtest/gtest.h"
 
-TEST(FuzzyTest, fuzzyset) {
+class FuzzyTest : public ::testing::Test {
+	protected:
+		int teste;
+
+		virtual void SetUp(){
+
+		}
+
+};
+
+TEST_F(FuzzyTest, teste){
+	teste = 0;
+	EXPECT_EQ(0,teste);
+}
+
+TEST(FuzzySet, fuzzyset) {
 
 	Fuzzy fuzzy(1);
 	//Fuzzy Sets -  Input 1 - Velocidade
@@ -12,7 +27,7 @@ TEST(FuzzyTest, fuzzyset) {
   	EXPECT_EQ(0, pertinance);
 }
 
-TEST(FuzzyTest, fuzzyset_isvalid) {
+TEST(FuzzySet, fuzzyset_isvalid) {
 
 	Fuzzy fuzzy(1);
 	//Fuzzy Sets -  Input 1 - Velocidade
@@ -23,7 +38,7 @@ TEST(FuzzyTest, fuzzyset_isvalid) {
   	EXPECT_TRUE(isValid);
 }
 
-TEST(Fuzzy, fuzzificar){
+TEST_F(FuzzyTest, fuzzificar){
 	Fuzzy fuzzy(1);
 	//Fuzzy Sets -  Input 1 - Velocidade
   	FuzzySet* velocidadeBaixa = new FuzzySet(0.0, 0.0, 30, 60);
