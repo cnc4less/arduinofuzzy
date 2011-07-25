@@ -37,5 +37,6 @@ class Fuzzy {
 		int indexRule;
 		FuzzyComposition composition;
 		float discretize(int quant);
+                void init();
 };
 

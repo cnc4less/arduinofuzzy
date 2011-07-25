@@ -3,18 +3,21 @@
 #include <string.h>
 #include <inttypes.h>
 
+void Fuzzy::init(){
+        //Initialize all arrays with 0
+	for (int i = 0; i < MAX_NUMBER_OF_INPUTS+1; i++){
+		inputs[i] = 0;
+		for (int k = 0; k < MAX_NUMBER_OF_FUZZY_SETS; k++){
+			resultFuzzyfication[i][k] = 0;
+			fuzzySetsInput[i][k] = 0;
+		}
+	}
+}
+
 Fuzzy::Fuzzy(int number){
 	number_input_var = number;
 	indexRule = 0;
-
-	//Initialize all arrays with NULL
-	for (int i = 0; i < MAX_NUMBER_OF_INPUTS+1; i++){
-		inputs[i] = NULL;
-		for (int k = 0; k < MAX_NUMBER_OF_FUZZY_SETS; k++){
-			resultFuzzyfication[i][k] = NULL;
-			//fuzzySetsInput[i][k] = NULL;
-		}
-	}
+        init();
 }
 /*************************************************************************************************************************************************************************************/
 
@@ -62,8 +65,8 @@ void Fuzzy::evaluate(){
 }
 
 void Fuzzy::fuzzify(int indexInput){
-	FuzzySet* fuzzySet;
-	float a,b,c,d,slope,pertinance;
+	FuzzySet* fuzzySet = 0;
+	float a,b,c,d,slope,pertinance = 0;;
 	float crispInput = inputs[indexInput];
 
 	for (int i = 0; i < MAX_NUMBER_OF_FUZZY_SETS; i++){
@@ -71,23 +74,26 @@ void Fuzzy::fuzzify(int indexInput){
 		slope = 0.0;
 		fuzzySet = fuzzySetsInput[indexInput][i];
 
-		a = fuzzySet->getPointA();
-		b = fuzzySet->getPointB();
-		c = fuzzySet->getPointC();
-		d = fuzzySet->getPointD();
+                if (fuzzySet != 0){
+                        a = fuzzySet->getPointA();
+                        b = fuzzySet->getPointB();
+                        c = fuzzySet->getPointC();
+                        d = fuzzySet->getPointD();
 
-		if (crispInput >= a && crispInput < b){
-			slope = 1 / (b - a);
-			pertinance = slope * (crispInput - b) + 1;
-		}else if (crispInput >= b && crispInput <= c){
-			pertinance = 1;
-		}else if (crispInput >c && crispInput <= d){
-			slope = 1 / (c - d);
-			pertinance = slope * (crispInput - c) + 1;
-		}
+                        if (crispInput >= a && crispInput < b){
+                                slope = 1 / (b - a);
+                                pertinance = slope * (crispInput - b) + 1;
+                        }else if (crispInput >= b && crispInput <= c){
+                                pertinance = 1;
+                        }else if (crispInput >c && crispInput <= d){
+                                slope = 1 / (c - d);
+                                pertinance = slope * (crispInput - c) + 1;
+                        }
 
-		resultFuzzyfication[indexInput][i] = pertinance;
-		fuzzySet->setPertinance(pertinance);
+                        resultFuzzyfication[indexInput][i] = pertinance;
+                        fuzzySet->setPertinance(pertinance);
+                }
+                
 	}
 }
 
