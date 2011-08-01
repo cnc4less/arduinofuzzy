@@ -21,7 +21,7 @@ Fuzzy::Fuzzy(int number){
 }
 /*************************************************************************************************************************************************************************************/
 
-void Fuzzy::setFuzzySetsInput(int index, int indexSet, FuzzySet* f){
+void Fuzzy::addFuzzySet(int index, int indexSet, FuzzySet* f){
 	fuzzySetsInput[index][indexSet] = f;
 	f->setIndex(index);
 }
@@ -88,6 +88,12 @@ void Fuzzy::fuzzify(int indexInput){
                         }else if (crispInput >c && crispInput <= d){
                                 slope = 1 / (c - d);
                                 pertinance = slope * (crispInput - c) + 1;
+                        }else if (crispInput > d){
+                            if (c == d){
+                                pertinance = 1;
+                            }else{
+                                pertinance = 0;
+                            }
                         }
 
                         resultFuzzyfication[indexInput][i] = pertinance;

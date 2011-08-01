@@ -11,9 +11,9 @@ int main(){
   	FuzzySet* velocidadeAlta = new FuzzySet(60, 90, 100, 100);
 
   	//Index 0 - Input - Velocidade
-  	fuzzy.setFuzzySetsInput(0, 0, velocidadeBaixa);   //Set 0
-  	fuzzy.setFuzzySetsInput(0, 1, velocidadeMedia);   //Set 1
-  	fuzzy.setFuzzySetsInput(0, 2, velocidadeAlta);   //Set 2
+  	fuzzy.addFuzzySet(0, 0, velocidadeBaixa);   //Set 0
+  	fuzzy.addFuzzySet(0, 1, velocidadeMedia);   //Set 1
+  	fuzzy.addFuzzySet(0, 2, velocidadeAlta);   //Set 2
 
 
   	//Fuzzy Sets - Output - Consumo
@@ -23,9 +23,9 @@ int main(){
 
 
   	//Index 2 - Output
-  	fuzzy.setFuzzySetsInput(1, 0,consumoAlto);
-  	fuzzy.setFuzzySetsInput(1, 1, consumoMedio);
-  	fuzzy.setFuzzySetsInput(1, 2, consumoBaixo);
+  	fuzzy.addFuzzySet(1, 0,consumoAlto);
+  	fuzzy.addFuzzySet(1, 1, consumoMedio);
+  	fuzzy.addFuzzySet(1, 2, consumoBaixo);
 
   	//Rules Base
         FuzzyRule rule1(velocidadeMedia, consumoBaixo);
@@ -38,7 +38,7 @@ int main(){
   	fuzzy.addRule(rule3);
 
         //Definindo o valor crisp da Velocidade
-        fuzzy.setInputs(0, 40);
+        fuzzy.setInputs(0, 35);
 
         //Fuzzificando
         fuzzy.fuzzify(0);
@@ -49,23 +49,63 @@ int main(){
         float pertinenciaVelocidadeMedia = fuzzy.getFuzzification(0, 1);
         float pertinenciaVelocidadeAlta = fuzzy.getFuzzification(0, 2);
 
+//        cout << "Pertinências...: \n\n";
+//        cout << "Velocidade Baixa: ";
+//        cout << pertinenciaVelocidadeBaixa;
+//        cout << "\n";
+//
+//        cout << "Velocidade Media: ";
+//        cout << pertinenciaVelocidadeMedia;
+//        cout << "\n";
+//
+//        cout << "Velocidade Alta.........: ";
+//        cout << pertinenciaVelocidadeAlta;
+//        cout << "\n";
+//
+//        float resultado = fuzzy.desfuzzify();
+//        cout << "\nResultado..........: ";
+//        cout << resultado;
+//        cout << "\n";
+        
+        
+        
+        
+        /********************************************************/
+        
+        Fuzzy fuzzy2(1);
+	//Fuzzy Sets -  Input 1 - Velocidade
+  	FuzzySet* perto = new FuzzySet(0.0, 0.0, 25, 50);
+  	FuzzySet* medio = new FuzzySet(25, 50, 50, 75);
+  	FuzzySet* longe = new FuzzySet(50, 75, 100, 100);
+
+  	//Index 0 - Input - Velocidade
+  	fuzzy.addFuzzySet(0, 0, perto);   //Set 0
+  	fuzzy.addFuzzySet(0, 1, medio);   //Set 1
+  	fuzzy.addFuzzySet(0, 2, longe);   //Set 2
+
+        //Definindo o valor crisp da Velocidade
+        fuzzy.setInputs(0, 7);
+
+        //Fuzzificando
+        fuzzy.fuzzify(0);
+
+        float pertinenciaPerto = fuzzy.getFuzzification(0, 0);
+        float pertinenciaMedio = fuzzy.getFuzzification(0, 1);
+        float pertinenciaLonge = fuzzy.getFuzzification(0, 2);
+
         cout << "Pertinências...: \n\n";
-        cout << "Velocidade Baixa: ";
-        cout << pertinenciaVelocidadeBaixa;
+        cout << "Perto: ";
+        cout << pertinenciaPerto;
         cout << "\n";
 
-        cout << "Velocidade Media: ";
-        cout << pertinenciaVelocidadeMedia;
+        cout << "Médio: ";
+        cout << pertinenciaMedio;
         cout << "\n";
 
-        cout << "Velocidade Alta.........: ";
-        cout << pertinenciaVelocidadeAlta;
+        cout << "Longe: ";
+        cout << pertinenciaLonge;
         cout << "\n";
 
-        float resultado = fuzzy.desfuzzify();
-        cout << "\nResultado..........: ";
-        cout << resultado;
-        cout << "\n";
 	return 0;
 }
 
