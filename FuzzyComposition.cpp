@@ -63,12 +63,12 @@ float FuzzyComposition::discretize(int quant){
 	}
 
 	float razao = (lastPoint - firstPoint) / (quant - 1);
-        float pos_ini = ((maxPointT1 - firstPoint) / razao) + 1;
-        pos_ini = ceil(pos_ini);
+        float pos_ini = ((maxPointT1 - firstPoint) / razao) + 1;        
+        pos_ini = ceil(pos_ini);        
         float vi = firstPoint + razao * (pos_ini - 1);
         
         float pos_fim = ((maxPointT2 - firstPoint) / razao) + 1;
-        pos_fim=ceil(pos_fim);
+        pos_fim=ceil(pos_fim);        
         float vf = firstPoint + razao * (pos_fim - 1);
 
         float result = (vf + vi)/ 2;

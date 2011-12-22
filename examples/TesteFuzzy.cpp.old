@@ -1,0 +1,174 @@
+#include <iostream>
+#include "../Fuzzy.h"
+
+using namespace std;
+
+int main() {
+    Fuzzy fuzzy(1);
+//
+//    FuzzySet pertoDireita(0, 0, 12.5, 25);
+//    FuzzySet medioDireita(12.5, 25, 25, 37.5);
+//    FuzzySet longeDireita(25, 37.5, 50, 50);
+//
+//    FuzzySet pertoEsquerda(0, 0, 12.5, 25);
+//    FuzzySet medioEsquerda(12.5, 25, 25, 37.5);
+//    FuzzySet longeEsquerda(25, 37.5, 50, 50);
+//
+//
+//    FuzzySet girarEsquerda(-180, -90, -90, -1);
+//    FuzzySet girarPouco(-20, 0, 0, 20);
+//    FuzzySet girarDireita(1, 90, 90, 180);
+//
+//
+//    FuzzyRule rule1(&pertoDireita, &pertoEsquerda, &girarPouco);
+//    FuzzyRule rule2(&pertoDireita, &medioEsquerda, &girarEsquerda);
+//    FuzzyRule rule3(&pertoDireita, &longeEsquerda, &girarEsquerda);
+//
+//    FuzzyRule rule4(&medioDireita, &pertoEsquerda, &girarDireita);
+//    FuzzyRule rule5(&medioDireita, &medioEsquerda, &girarPouco);
+//    FuzzyRule rule6(&medioDireita, &longeEsquerda, &girarEsquerda);
+//
+//    FuzzyRule rule7(&longeDireita, &pertoEsquerda, &girarDireita);
+//    FuzzyRule rule8(&longeDireita, &medioEsquerda, &girarDireita);
+//    FuzzyRule rule9(&longeDireita, &longeEsquerda, &girarPouco);
+//
+//    //Entrada 0 - Sensor Direita
+//    fuzzy.addFuzzySet(0, 0, &pertoDireita);
+//    fuzzy.addFuzzySet(0, 1, &medioDireita);
+//    fuzzy.addFuzzySet(0, 2, &longeDireita);
+//
+//    //Entrada 1 - Sensor Esquerda
+//    fuzzy.addFuzzySet(1, 0, &pertoEsquerda);
+//    fuzzy.addFuzzySet(1, 1, &medioEsquerda);
+//    fuzzy.addFuzzySet(1, 2, &longeEsquerda);
+//
+//    //Saida - Giro
+//    fuzzy.addFuzzySet(2, 0, &girarEsquerda);
+//    fuzzy.addFuzzySet(2, 1, &girarPouco);
+//    fuzzy.addFuzzySet(2, 2, &longeDireita);
+//
+//    fuzzy.addRule(rule1);
+//    fuzzy.addRule(rule2);
+//    fuzzy.addRule(rule3);
+//    fuzzy.addRule(rule4);
+//    fuzzy.addRule(rule5);
+//    fuzzy.addRule(rule6);
+//    fuzzy.addRule(rule7);
+//    fuzzy.addRule(rule8);
+//    fuzzy.addRule(rule9);
+//
+//    
+//    
+//    
+//    fuzzy.setInputs(0,140.65);
+//    fuzzy.setInputs(1,24.43);
+//    
+//    fuzzy.fuzzify(0);
+//    fuzzy.fuzzify(1);
+//  
+//    fuzzy.evaluate();
+
+    //Fuzzy Sets -  Input 1 - Velocidade
+      	FuzzySet* velocidadeBaixa = new FuzzySet(0.0, 0.0, 30, 60);
+      	FuzzySet* velocidadeMedia = new FuzzySet(30, 60, 60, 90);
+      	FuzzySet* velocidadeAlta = new FuzzySet(60, 90, 100, 100);
+    
+      	//Index 0 - Input - Velocidade
+      	fuzzy.addFuzzySet(0, 0, velocidadeBaixa);   //Set 0
+      	fuzzy.addFuzzySet(0, 1, velocidadeMedia);   //Set 1
+      	fuzzy.addFuzzySet(0, 2, velocidadeAlta);   //Set 2
+    
+    
+      	//Fuzzy Sets - Output - Consumo
+      	FuzzySet* consumoAlto = new FuzzySet(0.0, 0.0, 3, 6);
+      	FuzzySet* consumoMedio = new FuzzySet(3, 6, 6, 9);
+      	FuzzySet* consumoBaixo = new FuzzySet(6, 9, 10, 10);
+    
+    
+      	//Index 2 - Output
+      	fuzzy.addFuzzySet(1, 0,consumoAlto);
+      	fuzzy.addFuzzySet(1, 1, consumoMedio);
+      	fuzzy.addFuzzySet(1, 2, consumoBaixo);
+    
+      	//Rules Base
+        FuzzyRule rule1(velocidadeMedia, consumoBaixo);
+      	FuzzyRule rule2(velocidadeBaixa, consumoMedio);
+      	FuzzyRule rule3(velocidadeAlta, consumoAlto);
+    
+    
+      	fuzzy.addRule(rule1);
+     	fuzzy.addRule(rule2);
+      	fuzzy.addRule(rule3);
+    
+            //Definindo o valor crisp da Velocidade
+            fuzzy.setInputs(0, 40);
+    
+            //Fuzzificando
+            fuzzy.fuzzify(0);
+    
+            fuzzy.evaluate();
+    
+            float pertinenciaVelocidadeBaixa = fuzzy.getFuzzification(0, 0);
+            float pertinenciaVelocidadeMedia = fuzzy.getFuzzification(0, 1);
+            float pertinenciaVelocidadeAlta = fuzzy.getFuzzification(0, 2);
+    
+            cout << "Pertinências...: \n\n";
+            cout << "Velocidade Baixa: ";
+            cout << pertinenciaVelocidadeBaixa;
+            cout << "\n";
+    
+            cout << "Velocidade Media: ";
+            cout << pertinenciaVelocidadeMedia;
+            cout << "\n";
+    
+            cout << "Velocidade Alta.........: ";
+            cout << pertinenciaVelocidadeAlta;
+            cout << "\n";
+    
+            float resultado = fuzzy.desfuzzify();
+            cout << "\nResultado..........: ";
+            cout << resultado;
+            cout << "\n";
+
+
+
+
+    /********************************************************/
+
+    //        Fuzzy fuzzy2(1);
+    //	//Fuzzy Sets -  Input 1 - Velocidade
+    //  	FuzzySet* perto = new FuzzySet(0.0, 0.0, 25, 50);
+    //  	FuzzySet* medio = new FuzzySet(25, 50, 50, 75);
+    //  	FuzzySet* longe = new FuzzySet(50, 75, 100, 100);
+    //
+    //  	//Index 0 - Input - Velocidade
+    //  	fuzzy.addFuzzySet(0, 0, perto);   //Set 0
+    //  	fuzzy.addFuzzySet(0, 1, medio);   //Set 1
+    //  	fuzzy.addFuzzySet(0, 2, longe);   //Set 2
+    //
+    //        //Definindo o valor crisp da Velocidade
+    //        fuzzy.setInputs(0, 7);
+    //
+    //        //Fuzzificando
+    //        fuzzy.fuzzify(0);
+    //
+    //        float pertinenciaPerto = fuzzy.getFuzzification(0, 0);
+    //        float pertinenciaMedio = fuzzy.getFuzzification(0, 1);
+    //        float pertinenciaLonge = fuzzy.getFuzzification(0, 2);
+    //
+    //        cout << "Pertinências...: \n\n";
+    //        cout << "Perto: ";
+    //        cout << pertinenciaPerto;
+    //        cout << "\n";
+    //
+    //        cout << "Médio: ";
+    //        cout << pertinenciaMedio;
+    //        cout << "\n";
+    //
+    //        cout << "Longe: ";
+    //        cout << pertinenciaLonge;
+    //        cout << "\n";
+
+    return 0;
+}
+

@@ -3,109 +3,121 @@
 
 using namespace std;
 
-int main(){
+int main() {
 	Fuzzy fuzzy(1);
-	//Fuzzy Sets -  Input 1 - Velocidade
-  	FuzzySet* velocidadeBaixa = new FuzzySet(0.0, 0.0, 30, 60);
-  	FuzzySet* velocidadeMedia = new FuzzySet(30, 60, 60, 90);
-  	FuzzySet* velocidadeAlta = new FuzzySet(60, 90, 100, 100);
+	//Fuzzy Sets -  Input 1 - Distancia
+	FuzzySet* veryShortD = new FuzzySet(0, 0, 2, 4);
+	FuzzySet* shortD = new FuzzySet(2, 4, 4, 6);
+	FuzzySet* mediumD = new FuzzySet(4, 6, 6, 8);
+	FuzzySet* bigD = new FuzzySet(6, 8, 8, 10);
+	FuzzySet* veryBigD = new FuzzySet(8, 10, 12, 12);
 
-  	//Index 0 - Input - Velocidade
-  	fuzzy.addFuzzySet(0, 0, velocidadeBaixa);   //Set 0
-  	fuzzy.addFuzzySet(0, 1, velocidadeMedia);   //Set 1
-  	fuzzy.addFuzzySet(0, 2, velocidadeAlta);   //Set 2
+	//Index 0 - Input - Distancia
+	fuzzy.addFuzzySet(0, 0, veryShortD); //Set 0
+	fuzzy.addFuzzySet(0, 1, shortD); //Set 1
+	fuzzy.addFuzzySet(0, 2, mediumD); //Set 2
+	fuzzy.addFuzzySet(0, 3, bigD); //Set 2
+	fuzzy.addFuzzySet(0, 4, veryBigD); //Set 2
 
+	//Fuzzy Sets - Output - Consumo
+	FuzzySet* veryShortW = new FuzzySet(0, 0, 0, 0.2);
+	FuzzySet* shortW = new FuzzySet(0, 0.2, 0.2, 0.3);
+	FuzzySet* mediumW = new FuzzySet(0.2, 0.3, 0.3, 0.6);
+	FuzzySet* bigW = new FuzzySet(0.4, 0.6, 0.6, 1);
+	FuzzySet* veryBigW = new FuzzySet(0.6, 1, 1, 1);
 
-  	//Fuzzy Sets - Output - Consumo
-  	FuzzySet* consumoAlto = new FuzzySet(0.0, 0.0, 3, 6);
-  	FuzzySet* consumoMedio = new FuzzySet(3, 6, 6, 9);
-  	FuzzySet* consumoBaixo = new FuzzySet(6, 9, 10, 10);
+	//Index 2 - Output
+	fuzzy.addFuzzySet(1, 0, veryShortW);
+	fuzzy.addFuzzySet(1, 1, shortW);
+	fuzzy.addFuzzySet(1, 2, mediumW);
+	fuzzy.addFuzzySet(1, 3, bigW);
+	fuzzy.addFuzzySet(1, 4, veryBigW);
 
+	//Rules Base
+	FuzzyRule rule0(veryShortD, veryShortW);
+	FuzzyRule rule1(shortD, shortW);
+	FuzzyRule rule2(mediumD, mediumW);
+	FuzzyRule rule3(bigD, bigW);
+	FuzzyRule rule4(veryBigD, veryBigW);
 
-  	//Index 2 - Output
-  	fuzzy.addFuzzySet(1, 0,consumoAlto);
-  	fuzzy.addFuzzySet(1, 1, consumoMedio);
-  	fuzzy.addFuzzySet(1, 2, consumoBaixo);
+	fuzzy.addRule(rule0);
+	fuzzy.addRule(rule1);
+	fuzzy.addRule(rule2);
+	fuzzy.addRule(rule3);
+	fuzzy.addRule(rule4);
 
-  	//Rules Base
-        FuzzyRule rule1(velocidadeMedia, consumoBaixo);
-  	FuzzyRule rule2(velocidadeBaixa, consumoMedio);
-  	FuzzyRule rule3(velocidadeAlta, consumoAlto);
+	//Definindo o valor crisp da Velocidade
+	//for (float x = 11.0; x < 12; x = x + 1) {
+        float x = 9;
+		fuzzy.setInputs(0, x);
 
+		//Fuzzificando
+		fuzzy.fuzzify(0);
 
-  	fuzzy.addRule(rule1);
- 	fuzzy.addRule(rule2);
-  	fuzzy.addRule(rule3);
+		fuzzy.evaluate();
 
-        //Definindo o valor crisp da Velocidade
-        fuzzy.setInputs(0, 35);
+		float pertinenciaLeituraMuitoPerto = fuzzy.getFuzzification(0, 0);
+		float pertinenciaLeituraPerto = fuzzy.getFuzzification(0, 1);
+		float pertinenciaLeituraMediaD = fuzzy.getFuzzification(0, 2);
+		float pertinenciaLeituraLonge = fuzzy.getFuzzification(0, 3);
+		float pertinenciaLeituraMuitoLonge = fuzzy.getFuzzification(0, 4);
 
-        //Fuzzificando
-        fuzzy.fuzzify(0);
+		float saida0 = fuzzy.desfuzzify();
 
-        fuzzy.evaluate();
+/*
+		fuzzy.setInputs(1, saida0);
 
-        float pertinenciaVelocidadeBaixa = fuzzy.getFuzzification(0, 0);
-        float pertinenciaVelocidadeMedia = fuzzy.getFuzzification(0, 1);
-        float pertinenciaVelocidadeAlta = fuzzy.getFuzzification(0, 2);
+		//Fuzzificando
+		fuzzy.fuzzify(1);
 
-//        cout << "Pertinências...: \n\n";
-//        cout << "Velocidade Baixa: ";
-//        cout << pertinenciaVelocidadeBaixa;
-//        cout << "\n";
-//
-//        cout << "Velocidade Media: ";
-//        cout << pertinenciaVelocidadeMedia;
-//        cout << "\n";
-//
-//        cout << "Velocidade Alta.........: ";
-//        cout << pertinenciaVelocidadeAlta;
-//        cout << "\n";
-//
-//        float resultado = fuzzy.desfuzzify();
-//        cout << "\nResultado..........: ";
-//        cout << resultado;
-//        cout << "\n";
-        
-        
-        
-        
-        /********************************************************/
-        
-        Fuzzy fuzzy2(1);
-	//Fuzzy Sets -  Input 1 - Velocidade
-  	FuzzySet* perto = new FuzzySet(0.0, 0.0, 25, 50);
-  	FuzzySet* medio = new FuzzySet(25, 50, 50, 75);
-  	FuzzySet* longe = new FuzzySet(50, 75, 100, 100);
+		fuzzy.evaluate();
 
-  	//Index 0 - Input - Velocidade
-  	fuzzy.addFuzzySet(0, 0, perto);   //Set 0
-  	fuzzy.addFuzzySet(0, 1, medio);   //Set 1
-  	fuzzy.addFuzzySet(0, 2, longe);   //Set 2
+		float pertinenciaLeituraMuitoBaixa = fuzzy.getFuzzification(1, 0);
+		float pertinenciaLeituraBaixa = fuzzy.getFuzzification(1, 1);
+		float pertinenciaLeituraMediaW = fuzzy.getFuzzification(1, 2);
+		float pertinenciaLeituraAlta = fuzzy.getFuzzification(1, 3);
+		float pertinenciaLeituraMuitoAlta = fuzzy.getFuzzification(1, 4);
 
-        //Definindo o valor crisp da Velocidade
-        fuzzy.setInputs(0, 7);
+		float saida1 = fuzzy.desfuzzify();
 
-        //Fuzzificando
-        fuzzy.fuzzify(0);
+		/*
+		cout << x;
+		cout << ", ";
+		cout << saida;
+		*/
 
-        float pertinenciaPerto = fuzzy.getFuzzification(0, 0);
-        float pertinenciaMedio = fuzzy.getFuzzification(0, 1);
-        float pertinenciaLonge = fuzzy.getFuzzification(0, 2);
+		cout << x;
+		cout << " => ";
+		cout << " {";
+		cout << pertinenciaLeituraMuitoPerto;
+		cout << ", ";
+		cout << pertinenciaLeituraPerto;
+		cout << ", ";
+		cout << pertinenciaLeituraMediaD;
+		cout << ", ";
+		cout << pertinenciaLeituraLonge;
+		cout << ", ";
+		cout << pertinenciaLeituraMuitoLonge;
+		cout << "}, ";
+		/*
+		cout << "{";
+		cout << pertinenciaLeituraMuitoBaixa;
+		cout << ", ";
+		cout << pertinenciaLeituraBaixa;
+		cout << ", ";
+		cout << pertinenciaLeituraMediaW;
+		cout << ", ";
+		cout << pertinenciaLeituraAlta;
+		cout << ", ";
+		cout << pertinenciaLeituraMuitoAlta;
+		cout << "}, ";
+		*/
+		cout << saida0;
+		//cout << ", ";
+		//cout << saida1;
 
-        cout << "Pertinências...: \n\n";
-        cout << "Perto: ";
-        cout << pertinenciaPerto;
-        cout << "\n";
-
-        cout << "Médio: ";
-        cout << pertinenciaMedio;
-        cout << "\n";
-
-        cout << "Longe: ";
-        cout << pertinenciaLonge;
-        cout << "\n";
-
+		cout << "\n";
+	//}
 	return 0;
 }
 

@@ -44,8 +44,7 @@ void Fuzzy::reOrderBaseRules(){
                     baseRules[i] = fPosterior;
                     baseRules[i+1] = fAtual;
                 }
-        }
-        
+        }        
     }
     
 }
@@ -57,9 +56,7 @@ void Fuzzy::evaluate(){
 		FuzzyRule* f = &baseRules[i];
 		f->evaluate();
 	}
-
-        //Re-order the rules, based on the outputs;
-        reOrderBaseRules();
+        
 	//Truncate the outputs of the fired rules
 	truncate();
 }
@@ -112,6 +109,9 @@ void Fuzzy::addRule(FuzzyRule rule){
 		baseRules[indexRule] = rule;
 		indexRule = indexRule + 1;
 	}
+        
+        //Re-order the rules, based on the outputs;
+        reOrderBaseRules();
 }
 
 void Fuzzy::truncate(){

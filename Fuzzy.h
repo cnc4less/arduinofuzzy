@@ -3,7 +3,7 @@
 #include "FuzzyComposition.h"
 
 #define MAX_NUMBER_OF_INPUTS 2
-#define MAX_NUMBER_OF_FUZZY_SETS 4
+#define MAX_NUMBER_OF_FUZZY_SETS 5
 #define MAX_NUMBER_OF_RULES 16
 
 class Fuzzy {
